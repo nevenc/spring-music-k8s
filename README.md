@@ -5,4 +5,5 @@ This application is a copy of the https://github.com/cloudfoundry-samples/spring
 We are using this application to demonstrate best practices building, deploying and running Spring apps in Kubernetes.
 
 ## Hands-on Examples
+* [Lab - Building simple Dockerfile](lab-simple-dockerfile.md)
 
