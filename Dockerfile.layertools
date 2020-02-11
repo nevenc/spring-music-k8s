@@ -1,0 +1,17 @@
+# Stage 1: Extract layers of the app
+FROM adoptopenjdk:11-jdk-hotspot AS build
+WORKDIR application
+ARG JAR_FILE=build/libs/*.jar
+ADD ${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+# Stage 2: Build layered container image
+FROM adoptopenjdk:11-jre-hotspot
+WORKDIR application
+COPY --from=build application/dependencies/ ./
+COPY --from=build application/snapshot-dependencies/ ./
+COPY --from=build application/resources/ ./
+COPY --from=build application/application/ ./
+EXPOSE 8080
+ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher"]
+
