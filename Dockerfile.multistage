@@ -1,0 +1,17 @@
+# Stage 1: Extract layers of the app
+FROM adoptopenjdk:11-jdk-hotspot AS build
+ARG JAR_FILE=build/libs/*.jar
+ADD ${JAR_FILE} app.jar
+RUN mkdir /app \
+  && cd /app \
+  && jar xf /app.jar
+
+# Stage 2: Build layered container image
+FROM adoptopenjdk:11-jre-hotspot
+COPY --from=build /app/BOOT-INF/lib /app/lib
+COPY --from=build /app/META-INF /app/META-INF
+COPY --from=build /app/BOOT-INF/classes /app
+VOLUME /tmp
+WORKDIR /app
+EXPOSE 8080
+ENTRYPOINT ["java","-cp","/app:/app/lib/*","org.cloudfoundry.samples.music.Application"]

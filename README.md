@@ -6,4 +6,5 @@ We are using this application to demonstrate best practices building, deploying 
 
 ## Hands-on Examples
 * [Lab - Building simple Dockerfile](lab-simple-dockerfile.md)
+* [Lab - Building multistage layered Dockerfile](lab-with-multistage.md)
 
